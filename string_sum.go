@@ -16,6 +16,7 @@ var (
 	errorNotTwoOperands = errors.New("expecting two operands, but received more or less")
 	// Use when the expression has improper characters
 	errorImproperChar = errors.New("expecting only digits and arithmetic operators, but received some extra")
+	inputFailed       = "input failed: %w"
 )
 
 // Implement a function that computes the sum of two int numbers written as a string
@@ -28,19 +29,22 @@ var (
 //
 // Use the errors defined above as described, again wrapping into fmt.Errorf
 
+/*string_sum_test.go:36: letters in second operand:
+wrong type of error is wrapped into the returned error: got *errors.errorString, want *strconv.NumError*/
+
 func StringSum(input string) (output string, err error) {
 	// space extracting
-	input = strings.ReplaceAll(input, " ", "")
+	//input = strings.ReplaceAll(input, " ", "")
 
 	// empty input check
 	if input == "" {
-		return "", fmt.Errorf("input failed: %w", errorEmptyInput)
+		return "", fmt.Errorf(inputFailed, errorEmptyInput)
 	}
 	// operands number check
 	re, _ := regexp.Compile(`\d+`)
 	operandSlice := re.FindAllString(input, -1)
 	if len(operandSlice) != 2 {
-		return "", fmt.Errorf("input failed: %w", errorNotTwoOperands)
+		return "", fmt.Errorf(inputFailed, errorNotTwoOperands)
 	}
 
 	var numStack []int
@@ -51,15 +55,15 @@ func StringSum(input string) (output string, err error) {
 	for i := 0; i < len(input); i++ {
 		chr := input[i]
 		// improper sign check
-		if !(chr >= '0' && chr <= '9') && !strings.Contains("+-", string(chr)) {
-			return "", fmt.Errorf("input failed: %w", errorImproperChar)
+		if !(chr >= '0' && chr <= '9') && !strings.Contains("+- ", string(chr)) {
+			return "", fmt.Errorf(inputFailed, errorImproperChar)
 		}
 		// operand forming
 		if chr >= '0' && chr <= '9' {
 			num = num*10 + int(chr-'0')
 		}
-		// numStack filling/changing
-		if i+1 == len(input) || strings.Contains("+-*/", string(chr)) {
+		// numStack filling
+		if i+1 == len(input) || strings.Contains("+-", string(chr)) {
 			switch sign {
 			case '+':
 				numStack = append(numStack, num)
