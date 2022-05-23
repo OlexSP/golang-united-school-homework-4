@@ -19,28 +19,13 @@ var (
 	inputFailed       = "input failed: %w"
 )
 
-// Implement a function that computes the sum of two int numbers written as a string
-// For example, having an input string "3+5", it should return output string "8" and nil error
-// Consider cases, when operands are negative ("-3+5" or "-3-5") and when input string contains whitespace (" 3 + 5 ")
-//
-//For the cases, when the input expression is not valid(contains characters, that are not numbers, +, - or whitespace)
-// the function should return an empty string and an appropriate error from strconv package wrapped into your own error
-// with fmt.Errorf function
-//
-// Use the errors defined above as described, again wrapping into fmt.Errorf
-
-/*string_sum_test.go:36: letters in second operand:
-wrong type of error is wrapped into the returned error: got *errors.errorString, want *strconv.NumError*/
-
 func StringSum(input string) (output string, err error) {
-	// space extracting
-	//input = strings.ReplaceAll(input, " ", "")
 
 	// empty input check
 	if input == "" {
 		return "", fmt.Errorf(inputFailed, errorEmptyInput)
 	}
-	// operands number check
+	// operands number check (just need it for the test)
 	re, _ := regexp.Compile(`\d+`)
 	operandSlice := re.FindAllString(input, -1)
 	if len(operandSlice) != 2 {
@@ -51,10 +36,10 @@ func StringSum(input string) (output string, err error) {
 	sign := '+'
 	num := 0
 	total := 0
-	// bitwise string iteration
+	//  string iteration
 	for i := 0; i < len(input); i++ {
 		chr := input[i]
-		// improper sign check
+		// improper sign check. the test wants an error from strconv.Itoa() :D
 		if !(chr >= '0' && chr <= '9') && !strings.Contains("+- ", string(chr)) {
 			return "", fmt.Errorf(inputFailed, errorImproperChar)
 		}
