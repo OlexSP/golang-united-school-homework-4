@@ -15,8 +15,8 @@ var (
 	// Use when the expression has number of operands not equal to two
 	errorNotTwoOperands = errors.New("expecting two operands, but received more or less")
 	// Use when the expression has improper characters
-	errorImproperChar = errors.New("expecting only digits and arithmetic operators, but received some extra")
-	inputFailed       = "input failed: %w"
+	// errorImproperChar = errors.New("expecting only digits and arithmetic operators, but received some extra")
+	inputFailed = "input failed: %w"
 )
 
 func StringSum(input string) (output string, err error) {
