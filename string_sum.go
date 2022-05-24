@@ -41,7 +41,8 @@ func StringSum(input string) (output string, err error) {
 		chr := input[i]
 		// improper sign check. the test wants an error from strconv.Itoa() :D
 		if !(chr >= '0' && chr <= '9') && !strings.Contains("+- ", string(chr)) {
-			return "", fmt.Errorf(inputFailed, errorImproperChar)
+			_, err = strconv.Atoi(input)
+			return "", err //fmt.Errorf("input failed: %w", errorImproperChar) було/стало ))
 		}
 		// operand forming
 		if chr >= '0' && chr <= '9' {
